@@ -1,0 +1,196 @@
+API Automation Testing
+---------------------------------------------------------------------------------------------------------------------------------
+JSON formats:
+		- if one key have only one value then it is called json entry
+		- if one key have multiples values then it is called json array
+		- if one key have multiple key-value pair then it is called as nested json.
+---------------------------------------------------------------------------------------------------------------------------------
+Hamcrest Library
+
+String Methods
+	1) equalTo()
+	2) is()
+	3) equalToIgnoingCase()
+	4) equalToIgnoringWhiteSpace()
+	5) containsString()
+	6) startswith()
+	7) endsWith()
+
+Numbers
+	1) equalTo()
+	2) greaterThan()
+	3) greaterThanAndEqualTo()
+	4) lessThan()
+	5) lessThanAndEqualTo()
+
+Map Method
+	1) hasKey()
+	2) hasValue()
+	3) hasEntry()
+
+Collection
+	1) hasItem()
+	2) hasItems()
+---------------------------------------------------------------------------------------------------------------------------------
+Req:
+	Validate email id, postman value and JDBC values
+
+Step 1: configure BaseURI		
+		RestAssured.baseURI="http://localhost:8000/topics/1";
+
+step 2: get the Request Specification interface object
+		RequestSpecification httpRequest = RestAssured.given();
+
+step 3: select the HTTP GET Request
+		Response response = httpRequest.get();
+
+step 4: get the ValidatableResponse interface object
+		ValidatableResponse validateResponse = response.then();
+
+step 5; use assertThat()method
+
+		validateResponse.assertThat();
+
+step 6: validate status code
+		validateResponse.statusCode(Matchers.equalTo(200));
+
+step 7: validate status line
+		validateResponse.statusLine(Matchers.containsString("OK"));
+
+step 8: validate response time
+		validateResponse.time(Matchers.lessThan(1000l));
+
+step 9: validate email id from response body
+
+		validateResponse.body("emailId", Matchers.equalTo(""rahul@gmail.com));
+
+step 10: validate postman value from response body array
+
+		validateResponse.body("ManualTesting", Matchers.hasItem("postman"));
+
+		validateResponse.body("ManualTesting", Matchers.hasItems("postman","Jira"));
+		
+		validateResponse.body("ManualTesting[3]", Matchers.equalTo("postman"));
+
+step 11: validate JDBC value is present or not
+		
+		validateResponse.body("Automationtesting", Matchers.hasValue("JDBC"));
+
+step 12: validate Content-Type key should have application/json value in response headers
+
+		validateResponse.header("Content-Type", Matchers.equalTo("application/json"));
+
+step 13; validate Content-Type key is present or not in response headers
+
+		validateResponse.header("",Matchers.hasKey("Content-Type"));
+
+
+package Tutorial3;
+
+import org.hamcrest.Matchers;
+
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.response.ValidatableResponse;
+import io.restassured.specification.RequestSpecification;
+
+public class Demo1 {
+
+	public static void main(String[] args) {
+		RestAssured.baseURI = "http://localhost:8000/topics/1";
+		RequestSpecification httpRequest = RestAssured.given();
+		Response response = httpRequest.get();
+
+		// get the ValidatableResponse interface object
+		ValidatableResponse validateResponse = response.then().assertThat();
+
+		// validate status code
+		validateResponse.statusCode(Matchers.equalTo(200));
+
+		// validate status line
+		validateResponse.statusLine(Matchers.containsString("OK"));
+
+		// validate response time
+		validateResponse.time(Matchers.lessThan((long) 1000));
+
+		// validate email id from response body
+
+		validateResponse.body("emailId", Matchers.is("rahul@gmail.com"));
+
+		// validate postman value in response body array
+
+		validateResponse.body("ManualTesting", Matchers.hasItem("postman"));
+
+		// validate postman and jira value in response body array
+
+		validateResponse.body("ManualTesting", Matchers.hasItems("postman", "Jira"));
+
+		// validate postman value in response body array
+		validateResponse.body("ManualTesting[3]", Matchers.equalTo("postman"));
+
+		// validate Rest Assured value present or not in response body without key
+		validateResponse.body("Automationtesting", Matchers.hasValue(Matchers.containsString("Rest Assured")));
+
+		// validate Content-Type key and application/json is present or not in Response
+		// header
+		validateResponse.header("Content-Type", Matchers.equalTo("application/json"));
+
+		// print all logs
+		validateResponse.log().all();
+
+	}
+
+}
+=====================================================================================
+		Enable Lombok dependency
+	
+step 1; add dependency
+
+<dependency> 
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <version>1.18.24</version>
+    <scope>provided</scope>
+</dependency>
+
+
+step 2: download Lombok jar and install it
+
+		https://projectlombok.org/download
+		double click downloaded file wait to search the Eclipse IDE and then click on install
+
+
+=====================================================================================
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

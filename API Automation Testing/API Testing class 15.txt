@@ -1,0 +1,831 @@
+Start json-server using below command
+			npx json-server db.json
+		
+			- it will enabled query and path parameter in json file.
+--------------------------------------------------------------------------------------------------------------------------------------
+What is use of Query Parameter?									
+		- it is used to sort or filter the test data as per the requirements
+		- in query parameter key-value pair.
+		- it will add query parameter key-value pair in url after the questions marks automatically.
+
+syntax:
+			httpRequest.queryParam("jsonKeyName", "jsonvalue");
+
+
+e.g.
+			httpRequest.queryParam("address", "Pune");
+
+e.g.
+			httpRequest.queryParam("lastName", "Patil");
+--------------------------------------------------------------------------------------------------------------------------------------
+Swagger documentations
+			Base URI				http://localhost:3000/employees
+			Query Parameter			address			value
+			Request Type			GET
+	
+		
+find all employee who is working Mumbai location
+		
+step 1: configure Base URI in rest Assured
+		
+		RestAssured.baseURI="http://localhost:3000/employees";
+
+step 2: get the RequestSpecification interface object
+
+		RequestSpecification httpRequest = RestAssured.given();
+
+step 3: find all employee who is working Mumbai address
+
+		httpRequest.queryParam("address", "Mumbai");
+
+
+step 4: select the HTTP GET Request
+
+		Response response = httpRequest.get();
+
+
+step 5: capture status code, status line, response time, size, response body, response header and response cookies
+
+		response.statusCode();
+		response.statusLine()
+		response.body().asString();
+
+package Tutorial1;
+
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
+public class Demo1 {
+
+	public static void main(String[] args) {
+		//Find all Employee who is working in Pune location
+		
+		//step 1: configure base URI in rest Assured
+		RestAssured.baseURI="http://localhost:3000/employees";
+		
+		//step 2: get the Request Specification interface object
+		RequestSpecification httpRequest = RestAssured.given();
+		
+		//step 3: Find all Employee who is working in Pune location
+		httpRequest.queryParam("address", "Pune");
+		
+		//step 4: Select the HTTP GET Request
+		Response response = httpRequest.get();
+		
+		//step 5: capture status code,
+		System.out.println(response.statusCode());
+		
+		//step 6: capture status line
+		System.out.println(response.statusLine());
+		
+		//step 7: capture response body
+		System.out.println(response.body().asString());
+		
+
+	}
+
+}
+===========================================================================================
+find all employee who is working in pune location and last name should be patil
+
+step 1: configure base URI
+			RestAssured.baseURI="http://localhost:3000/employees"
+step 2: get the Request Specification interface object
+		
+		RequestSpecification httpRequest = RestAssured.given();
+
+-------------------------------------------------------------------------------------------------
+step 3: find all employee who is working in pune location
+		httpRequest.queryParam("address", "Pune");
+
+step 4: find all employee who is last name should be patil
+
+		httpRequest.queryParam("lastName" , "Patil");
+-------------------------------------------------------------------------------------------------
+					OR
+-------------------------------------------------------------------------------------------------
+Step 5: store all query parameter key-value pair in HashMap object
+			
+		HashMap<String, String> abc = new HashMap<String,String>();
+		abc.put("address", "Pune");
+		abc.put("lastName", "Patil");
+
+step 6: find all employee who is working in pune location and last name should be patil
+
+		httpRequest.queryParams(abc);
+-------------------------------------------------------------------------------------------------
+
+step 7": select HTTP GET Request
+		Response response = httpRequest.get();
+
+
+step 8: capture status code, status line, time, body, headers, cookies
+
+		response.statusCode();
+		response.statusLine()
+		response.body().asString();
+
+		
+
+
+package Tutorial1;
+
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
+public class Demo3 {
+	// find all employee who is working in pune location and last name is
+	// patil
+
+	public static void main(String[] args) {
+		// step 1: configure base URI in rest Assured
+		RestAssured.baseURI = "http://localhost:3000/employees";
+
+		// step 2: get the Request Specification interface object
+		RequestSpecification httpRequest = RestAssured.given();
+
+		// step 3: find all employee who is working in pune location
+		httpRequest.queryParam("address", "Pune");
+
+		// step 4: find all employees who last name is Patil
+		httpRequest.queryParam("lastName", "Patil");
+
+		httpRequest.log().all();
+
+		// step 5: select the HTTP GET Request
+		Response response = httpRequest.get();
+
+		// step 6: capture response body
+		//System.out.println(response.body().asString());
+
+	}
+
+}
+========================================================================
+package Tutorial1;
+
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
+public class Demo4 {
+
+	// find all employee who is working in pune location and last name is
+	// patil
+
+	public static void main(String[] args) {
+		// step 1: configure base URI in rest Assured
+		RestAssured.baseURI = "http://localhost:3000/employees";
+
+		// step 2: get the Request Specification interface object
+		RequestSpecification httpRequest = RestAssured.given();
+
+		// step 3: store all query parameter key-value pair in HashMap object
+		LinkedHashMap<String, String> abc = new LinkedHashMap<String, String>();
+
+		abc.put("address", "Pune");
+		abc.put("lastName", "Patil");
+
+		// step 4: find all employee who is working in pune location and last name is
+		// patil
+
+		httpRequest.queryParams(abc);
+
+		//print request logs
+		httpRequest.log().all();
+		
+		// step 5: select the HTTP Request
+		Response response = httpRequest.get();
+
+		// step 6: capture response body
+		System.out.println(response.body().asString());
+	}
+
+}
+=======================================================================================
+Path Parameter
+		- it used find entity in server.
+
+Swagger documentation
+		Base URI			http://localhost:3000/employees
+		Request Type		GET
+		Path Parameter		id
+
+syntax;
+		httpRequest.pathParam("id", 2);
+
+
+Step 1:  configure the base URI in Rest Assured
+			
+			RestAssured.baseURI="http://localhost:3000/employees";
+
+step 2: get the RequestSpecification interface object
+			
+			RequestSpecification httpRequest = RestAssured.given();
+
+step 3: add path parameter to find the id 2 records
+			
+			httpRequest.pathParam("id", "2");
+
+step 4: user select the HTTP GET Request
+	
+			Response response = httpRequest.get("{id}");
+
+
+step 5: capture status code, status line, time, body, response headers, and cookies
+				
+			response.statusCode();
+			response.statusLine()
+			response.body().asString();
+
+package Tutorial2;
+
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
+public class Demo1 {
+
+	public static void main(String[] args) {
+		// configure Base URI in rest Assured.
+		RestAssured.baseURI = "http://localhost:3000/employees";
+
+		// get the Request Specification interface
+		RequestSpecification httpRequest = RestAssured.given();
+		
+		//add path Parameter to find the employee 2 records
+		httpRequest.pathParam("id", "2");
+		
+		//user select HTTP GET Request
+		Response response = httpRequest.get("{id}");
+		
+		//capture status code
+		System.out.println(response.statusCode());
+		
+		//capture status line
+		System.out.println(response.statusLine());
+		
+		//capture response body
+		System.out.println(response.body().asString());
+	}
+
+}
+====================================================================================
+Authorization
+		1) basic Authorization
+		2) OAuth 2.0
+
+
+1) basic Authorization					---> dummy API url
+	
+		Swagger Documentation
+				Base URI			https://postman-echo.com/basic-auth
+				Request Type		GET
+				Authorization Type		basic authorization
+											username		postman
+											password		password
+
+
+Basic authorization in postman tool
+		Base URI		https://postman-echo.com/basic-auth
+		click on authorization --- > select basic authorization		--- enter credentials
+
+																	username		postman
+																	password		password
+note;
+		if we enter invalid credentials then we will get 401 (unauthorized) as status code 
+		unauthorized means user dont have permission to access this application
+
+		
+		if we get status code as 403 that means forbidden
+		forbidden means user have permission to access the application but some functionality is restricted.
+
+-----------------------------------------------------------------------------------------
+Rest Assured with Basic Authorization
+
+step 1: configure base URI in rest assured
+
+		RestAssured.baseURI="https://postman-echo.com/basic-auth";
+
+step 2: get the RequestSpecification interface object
+		
+		RequestSpecification httpRequest = RestAssured.given();
+
+step 3: add basic authorization
+			httpRequest.auth().basic("postman", "password");
+
+step 4: user select the HTTP GET Request
+
+		Response response = httpRequest.get();
+
+step 5: capture status code, status line, time, response body, headers and cookies
+		response.statusCode();
+		response.statusLine();
+		response.time();
+		response.body().asString()
+		response.headers();
+		response.cookies();
+
+
+		package Tutorial2;
+
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
+public class Demo2 {
+	
+	public static void main(String[] args) {
+		//configure Base URI in rest Assured
+		RestAssured.baseURI="https://postman-echo.com/basic-auth";
+		
+		//get the RequestSpecification inteface object 
+		RequestSpecification httpRequest = RestAssured.given();
+		
+		//add basic authorization
+		httpRequest.auth().basic("postman", "password");
+		
+		//select the HTTP GET Request
+		Response response = httpRequest.get();
+		
+		//status code
+		System.out.println(response.statusCode());
+		
+		//status line
+		System.out.println(response.statusLine());
+		
+		//body
+		System.out.println(response.body().asString());
+	}
+
+}
+===============================================================================================
+OAuth 2.0 [ open Authorization 2.0 ]								----> dummy GitHub API url flow.
+
+syntax:
+		httpRequest.auth().preemptive().oAuth2("access token");
+
+Swagger documentations
+			Base URI				https://api.github.com/user/repos
+			Request Type			POST
+			Request Header			Content-Type	application/json
+			Request body				
+									{
+											"name":"{string}",
+											"homepage":"{string}",
+											"has_issues":{boolean},
+											"has_projects":{boolean},
+											"has_wiki":{boolean}
+									}
+			Authorization type		OAuth 2.0
+				
+Generate Access Token manually
+		- open a GitHub --- click on profile icon--- click on setting -- click on developer setting -- select classic token-- enter token name-- select all checkbox -- click on generate token.
+		
+			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
+------------------------------------------------------------------------
+Postman tool with OAuth 2.0
+	- enter the url
+	- click on body -- click on raw -- select json format -- enter body
+									{
+											"name":"pune123",
+											"homepage":"https://github.com",
+											"has_issues":true
+											"has_projects":true
+											"has_wiki": true
+									}
+
+	- click on authorization -- select OAuth 2.0 and enter the access token
+	- click on send request
+------------------------------------------------------------------------
+Rest Assured with OAuth 2.0
+
+Step 1: configure base URI in rest Assured
+			RestAssured.baseURI="https://api.github.com/user/repos";
+
+
+step 2; get the RequestSpecification interface object
+	
+			RequestSpecification httpRequest = RestAssured.given();
+
+step 3: add the OAuth2.0 
+
+		httpRequest.auth().preemptive().oauth2("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");
+
+step 4: add request header
+		httpRequest.header("Content-Type", "application/json");
+
+step 5: create Request Body
+		ObjectMapper mapper =new ObjectMapper();
+		File f =new File("json test data file location");
+		JsonNode jsonNode = mapper.readTree(f);
+
+		POJOClass objectName= mapper.treeToValue(jsonNode.get("nodeName"), POJOClass.Class);
+			
+		String requestbody = mapper.writeValueAsString(objectName);
+
+step 6: add request body to http request
+		httpRequest.body(requestbody);
+
+step 7: select the HTTP POST Request
+	
+		Response response = httpRequest.post();
+
+step 8: capture status code, status line, time, response body , response headers and cookies
+
+
+
+{
+	"createRepository": 
+	{
+		"name": "Mumbai1231",
+		"homepage": "https://github.com",
+		"has_issues": false,
+		"has_projects": true,
+		"has_wiki": false
+	}
+}
+
+package Tutorial3;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.Data;
+
+@Data
+public class RepositoryPOJO {
+
+	@JsonProperty("name")
+	private String name;
+
+	@JsonProperty("homepage")
+	private String homepage;
+
+	@JsonProperty("has_issues")
+	private boolean has_issues;
+
+	@JsonProperty("has_projects")
+	private boolean has_projects;
+
+	@JsonProperty("has_wiki")
+	private boolean has_wiki;
+
+}
+
+package Tutorial3;
+
+import java.io.File;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
+public class Demo1 {
+
+	public static void main(String[] args) throws Exception {
+		// Step 1: configure the Base URI
+		RestAssured.baseURI = "https://api.github.com/user/repos";
+
+		// step 2: get the RequestSpecification interface object
+		RequestSpecification httpRequest = RestAssured.given();
+
+		// step 3: add OAuth2.0 authorization
+		httpRequest.auth().preemptive().oauth2("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");
+
+		// step 4: add request header
+		httpRequest.header("Content-Type", "application/json");
+
+		// step 5: create Request body
+		ObjectMapper mapper = new ObjectMapper();
+
+		File f = new File(System.getProperty("user.dir") + "//src//test//resources//testdata.json");
+		JsonNode jsonNode = mapper.readTree(f);
+
+		RepositoryPOJO repository = mapper.treeToValue(jsonNode.get("createRepository"), RepositoryPOJO.class);
+
+		String requestBody = mapper.writeValueAsString(repository);
+
+		// step 6: add request body to HTTP Request
+		httpRequest.body(requestBody);
+
+		// step 7: select HTTP POST Request
+		Response response = httpRequest.post();
+
+		// step 8: capture status code, status line,time, body, headers, cookies
+		System.out.println(response.statusCode());
+		System.out.println(response.statusLine());
+		System.out.println(response.time());
+		System.out.println(response.body().asPrettyString());
+
+	}
+
+}
+===============================================================================================
+GET a Repository
+
+		Base URI			https://api.github.com/repos/{username}/{repositoryName}
+		Request Type		GET
+		
+
+postman with OAuth 2.0
+		- enter the url 
+		- click on authorization -- select OAuth2 and enter access token 
+		- click on 
+
+Rest Assured with OAuth2.0
+
+RestAssured.baseURI="https://api.github.com/repos/prafulp1030/Mumbai222";
+
+RequestSpecification httpRequest = RestAssured.given();
+
+httpRequest.auth().preemptive().oauth2("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")';
+
+Response response= httpRequest.get();
+
+response.statusCode();
+response.statusLine();
+response.time();
+response.body().asString();
+response.headers();
+response.cookies();
+
+package Tutorial3;
+
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
+public class Demo2 {
+
+	public static void main(String[] args) {
+		// Step 1: configure the Base URI
+		RestAssured.baseURI = "https://api.github.com/repos/prafulp1030/Mumbai222";
+
+		// step 2: get the RequestSpecification interface object
+		RequestSpecification httpRequest = RestAssured.given();
+		
+		//step 3: add authorization
+		httpRequest.auth().preemptive().oauth2("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");
+		
+		//step 4: select the GET Request
+		Response response = httpRequest.get();
+		
+		System.out.println(response.statusLine());
+		System.out.println(response.body().asPrettyString());
+		
+		
+	}
+}
+========================================================================
+DELETE Request
+
+package Tutorial3;
+
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
+public class Demo2 {
+
+	public static void main(String[] args) {
+		// Step 1: configure the Base URI
+		RestAssured.baseURI = "https://api.github.com/repos/prafulp1030/Mumbai222";
+
+		// step 2: get the RequestSpecification interface object
+		RequestSpecification httpRequest = RestAssured.given();
+		
+		//step 3: add authorization
+		httpRequest.auth().preemptive().oauth2("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");
+		
+		//step 4: select the GET Request
+		Response response = httpRequest.delete();
+		
+		System.out.println(response.statusLine());
+		//System.out.println(response.body().asPrettyString());
+		
+		
+	}
+}
+===============================================================================
+PUT Request
+			Base URI			https://api.github.com/repos/{username}/{repositoryName}	
+			Request Type			PATCH
+			Request Header			Content-Type	application/json
+			Request body				
+									{
+											"name":"{string}",
+											"homepage":"{string}",
+											"has_issues":{boolean},
+											"has_projects":{boolean},
+											"has_wiki":{boolean}
+									}
+			Authorization type		OAuth 2.0
+
+
+package Tutorial3;
+
+import org.json.simple.JSONObject;
+
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
+public class Demo3 {
+
+	public static void main(String[] args) {
+		// Step 1: configure the Base URI
+		RestAssured.baseURI = "https://api.github.com/repos/prafulp1030/pune123";
+
+		// step 2: get the RequestSpecification interface object
+		RequestSpecification httpRequest = RestAssured.given();
+
+		// step 3: add authorization
+		httpRequest.auth().preemptive().oauth2("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");
+		
+		httpRequest.header("Content-Type", "application/json");
+		
+		JSONObject json =new JSONObject();
+		json.put("has_projects", false);
+		
+		String requestBody = json.toString();
+		
+		httpRequest.body(requestBody);
+		
+		Response response = httpRequest.patch();
+		
+		System.out.println(response.statusCode());
+		System.out.println(response.body().asPrettyString());
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

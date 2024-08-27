@@ -1,0 +1,475 @@
+<dependency>
+    <groupId>org.hamcrest</groupId>
+    <artifactId>hamcrest</artifactId>
+    <version>2.2</version>
+    <scope>test</scope>
+</dependency>
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+1) How to Add Assertion in Rest Assured?															VVVVVVVVIMMPPPPPPPPP
+			or
+2) What is use of Hamcrest dependency/Library in Rest Assured or Rest API?									VVVVVVVVIMMPPPPPPPPP
+
+
+	- We add assertion in Rest Assured with Hamcrest Library or Dependency.
+	- Hamcrest Framework is also called as Matchers Framework and TestNG is called as Testing Framework.
+	-  Hamcrest Framework is very useful for Validation and data filtering.
+	- Hamcrest library define the few methods which is used to add assertion for String value, numbers, arrays and Map key-values.
+	-From Hamcrest Library we use ""'Matchers class""" to add the assertion.
+		- We add assertions for 
+				1) status code
+				2) status line
+				3) response time
+				4) response size
+				5) response body key or values 
+				6) response headers
+				7) response cookies
+
+	- Hamcrest Library Numbers Methods
+		-they define 5 methods to add the assertion 
+		1) equalTo() method
+					- check number both are numbers are equal to not?
+
+		2) greaterThan() method
+					- check number is greater or than
+
+		3) greaterThanAndEqualTo() method
+					- check numbers is greater than and equal to or not
+
+		4) lessThan() method
+				- check number is less or than or not
+	
+		5) lessThanAndEqualTo() method
+				- check numbers is less than and equal to or not
+
+	- Hamcrest Library defines the String
+		there are 7 methods available in String
+
+		1) equalTo()
+						- check both String is equal or not
+
+		2) is()
+						- check both String is equal or not
+
+		3) equalsToIgnoringCase()
+						- it will ignore the upper case and lower case string character and will compare the String values
+
+		4) equalToIgnoringWhiteSpace()
+						- it will ignores the white space and it compare the string values
+
+		5) containsString()
+						- check specific character is present or not in String
+
+		6) startsWith()
+						- check string is starts with specific character or not
+
+		7) endsWith() method
+						- check string is ends with specific character or not
+		
+
+	- Hamcrest defines the Map methods
+			they defines the 3 methods
+
+		1) hasKey() method
+			- check key is present or not in response body
+
+		2) hasValue() method
+					- check has is present or not in response body
+
+		3)hasEntry() method
+						- check key-value pair is present or not in response body
+	
+
+	- Hamcrest defines the Collections methods
+				- they 2 methods 
+		1) hasItem() method
+					- check the specific value is present or not in arrays.
+
+		2) hasItems() methods
+					- check the multiples value is present or not in arrays.
+
+
+==========================================================================================================================
+Numbers
+1) equalTo()
+2) greaterThan()
+3) greaterThanAndEqualTo()
+4) lessThan()
+5) lessThanAndEqualTo()
+
+String
+1) equalTo()
+2) is()
+3) equalsToIgnoringCase()
+4) equalToIgnoringWhiteSpace()
+5) containsString()
+6) startsWith()
+7) endsWith()
+
+Map
+1) hasKey()
+2) hasValue()
+3) hasEntry()
+
+Collection
+1) hasItem()
+2) hasItems()
+==========================================================================================================================
+- retrieve the entity and add assertion for status code and status line
+
+step 1: Configure Base URI in rest Assured
+			RestAssured.baseURI="http://localhost:5000/users/";
+
+step 2: get the RequestSpecification interface object
+			RequestSpecification httpRequest = RestAssured.given();
+
+step  3; select the HTTP GET Request
+			Response response = httpRequest.get();
+
+step 4: get the ValidatableResponse interface object
+
+			ValidatableResponse validatableResp = response.then();
+
+step 5: use assertThat() method from ValidatableResponse Interface
+			validatableResp.assertThat();
+
+step 6: add assertion for status code
+
+			validatableResp.statusCode(Matchers.equalTo(200));
+			validatableResp.statusCode(Matchers.greaterThan(100));
+			validatableResp.statusCode(Matchers.greaterThanOrEqualTo(200));
+			validatableResp.statusCode(Matchers.lessThan(300));
+			validatableResp.statusCode(Matchers.lessThanOrEqualTo(200));
+
+step 7: add assertion for status line
+
+			validatableResp.statusLine(Matchers.equalTo("HTTP/1.1 200 OK"));
+			validatableResp.statusLine(Matchers.is("HTTP/1.1 200 OK"));
+			validatableResp.statusLine(Matchers.containsString("OK"));
+			validatableResp.statusLine(Matchers.equalToIgnoringCase("HTTP/1.1 200 OK"));
+			validatableResp.statusLine(Matchers.equalToIgnoringWhiteSpace("HTTP/1.1 200 OK"));
+			validatableResp.statusLine(Matchers.startsWith("HTTP/1.1 200 OK"));
+			validatableResp.statusLine(Matchers.endsWith("HTTP/1.1 200 OK"));
+
+step 8: add assertions for response time
+
+			validatableResp.time(Matchers.equalTo(1000));
+			validatableResp.time(Matchers.greaterThan(100));
+			validatableResp.time(Matchers.greaterThanOrEqualTo(200));
+			validatableResp.time(Matches.lessThan(1000));
+			validatableResp.time(Matchers.lessThanOrEqualTo(1000));
+			
+
+			
+package Tutorial2;
+
+import org.hamcrest.Matchers;
+
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.response.ValidatableResponse;
+import io.restassured.specification.RequestSpecification;
+
+public class Demo1 {
+
+	public static void main(String[] args) {
+		// Configure Base URI
+		RestAssured.baseURI = "http://localhost:5000/users/1";
+
+		// get the RequestSpecification interface object
+		RequestSpecification httpRequest = RestAssured.given();
+
+		// select the HTTP GET Request
+		Response response = httpRequest.get();
+		
+		//get the ValidatableResponse interface object
+		ValidatableResponse validatableResponse= response.then();
+		
+		//use assertThat() mehtod
+		validatableResponse.assertThat();
+		
+		//add assertions for status code
+		validatableResponse.statusCode(Matchers.equalTo(200));
+		
+		//add assertion for status line
+		validatableResponse.statusLine(Matchers.containsString("OK"));
+		
+		//add assertion for response time
+		validatableResponse.time(Matchers.lessThan((long)1000));
+		
+		//print response log
+		validatableResponse.log().all();
+		
+		
+	}
+
+}
+===============================================================================================
+Add assertion for status code, status line, time, first name and age and country
+
+step 1: configure Base URI in Rest assured
+		RestAssured.baseURI="http://localhost:5000/users/1";
+
+
+step 2: get the RequestSpecification interface object
+
+		RequestSpecification httpRequest =  RestAssured.given();
+
+step 3: select the HTTP GET Request
+		Response response = httpRequest.get();
+
+
+step 4: get the ValidatableResponse interface object
+		ValidatableResponse validateResponse =response.then();
+
+
+step 5: use assertThat() methods
+		validateResponse.assertThat();
+
+
+step 6: add assertion for status code
+		validateResponse.statusCode(Matchers.equalTo(200));
+
+
+step 7: add assertion for status line
+		validateResponse.statusLine(Matchers.containsString("OK"));
+
+
+step 8: add assertion for response time
+		validateResponse.time(Matchers.lessThan((long)1000);
+
+step 9: add assertion for first name
+
+		validateResponse.body("firstName", Matchers.equalTo("Sandip"));
+
+
+step 10: add assertion for age
+		validateResponse.body("age",Matchers.equalTo(23));
+
+
+step 11: add assertion for country
+
+		validateResponse.body(address.country, Matchers.equalIgnoringCase("India"));
+
+
+step 12: print response logs
+	
+		validateResponse.log().all();
+
+
+
+package Tutorial2;
+
+import org.hamcrest.Matchers;
+
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.response.ValidatableResponse;
+import io.restassured.specification.RequestSpecification;
+
+public class Demo2 {
+
+	public static void main(String[] args) {
+		RestAssured.baseURI = "http://localhost:5000/users/1";
+		RequestSpecification httpRequest = RestAssured.given();
+		Response response = httpRequest.get();
+
+		// get the ValidatableResponse interface object
+		ValidatableResponse validateResponse = response.then();
+
+		//use assertThat() method
+		validateResponse.assertThat();
+		
+		//add assertion for status code
+		validateResponse.statusCode(Matchers.equalTo(200));
+		
+		//add assertion for status line
+		validateResponse.statusLine(Matchers.containsString("OK"));
+		
+		//add assertion for response time
+		validateResponse.time(Matchers.lessThan((long)1000));
+		validateResponse.time(Matchers.lessThan(1000l));
+		
+		//add assertion  for first name
+		validateResponse.body("firstName", Matchers.equalTo("Sandip"));
+		
+		//add assertion for age
+		validateResponse.body("age", Matchers.equalTo(23));
+		
+		//add assertion for country
+		validateResponse.body("address.country", Matchers.equalToIgnoringCase("India"));
+		
+		//check city key is present or not
+		validateResponse.body("address", Matchers.hasKey("city"));
+		
+		
+		//check username key is present not
+		validateResponse.body("", Matchers.hasKey("username"));
+		
+		//check Shinde value is present or not
+		validateResponse.body("", Matchers.hasValue("Shinde"));
+		
+		
+		//check age key and 23 value is present or not
+		validateResponse.body("", Matchers.hasEntry("age", 23));
+		
+		//check state key and MH value is present or not
+		validateResponse.body("address", Matchers.hasEntry("state", "MH"));
+		
+		
+		//print log in console
+		validateResponse.log().all();
+		
+		
+		
+		
+	}
+	
+}
+============================================================================================
+package Tutorial2;
+
+import java.io.File;
+
+import org.hamcrest.Matchers;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import POJO.User;
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.response.ValidatableResponse;
+import io.restassured.specification.RequestSpecification;
+
+public class Demo3 {
+
+	public static void main(String[] args) throws Exception {
+		RestAssured.baseURI = "http://localhost:5000/users";
+		RequestSpecification httpRequest = RestAssured.given();
+		httpRequest.header("Content-Type", "application/json");
+
+		ObjectMapper mapper = new ObjectMapper();
+		File file = new File(System.getProperty("user.dir") + "//src//test//resources//userTestData.json");
+		JsonNode jsonNode = mapper.readTree(file);
+		User user = mapper.treeToValue(jsonNode.get("createUser"), User.class);
+		String requestBody = mapper.writeValueAsString(user);
+
+		httpRequest.body(requestBody);
+		Response response = httpRequest.post();
+
+		// get the ValidatableResponse interface object
+		ValidatableResponse validateResponse = response.then();
+
+		// use assertThat() method
+		validateResponse.assertThat();
+
+		// add status code
+		validateResponse.statusCode(Matchers.equalTo(201));
+
+		// add status line
+		validateResponse.statusLine(Matchers.containsString("Created"));
+
+		// add response time
+		validateResponse.time(Matchers.lessThan(1000l));
+
+		// add assertion for firstName;
+
+		validateResponse.body("firstName", Matchers.equalTo(user.getFirstName()));
+
+		// add assertion for age
+
+		validateResponse.body("age", Matchers.equalTo(user.getAge()));
+
+		// add assertion for state
+		validateResponse.body("address.state", Matchers.equalTo(user.getAddress().getState()));
+
+		/// add assertion for headr
+		validateResponse.header("Content-Type", Matchers.equalTo("application/json"));
+
+		validateResponse.header("X-Powered-By", Matchers.equalTo("tinyhttp"));
+
+		// print log
+		validateResponse.log().all();
+
+	}
+}
+=========================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+					

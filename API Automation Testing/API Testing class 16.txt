@@ -1,0 +1,275 @@
+Library in Rest Assured Framework
+1) Rest Assured						4.4.0
+2) Json Path 							4.4.0
+
+3) Json simple						1.1.1
+4) Jackson-Databind					2.14.3
+5) gson dependency
+
+6) Lombok							
+7) Hamcrest
+8) Json Schema Validator				4.4.0
+9) Cucumber-core					6.4.0				
+10) cucumber-java					6.4.0
+11) cucumber-junit					6.4.0
+12) junit Dependency				4.13
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+What is Rest Assured?												VVVVVIMMMPPPPPPPPPPP
+
+	- Rest Assured is open source java library which is used to automate the API or Web Services based on JSON or XML format.
+	- Rest Assured uses the Domain Specific language (DSL) for writing the test cases.
+	- Rest Assured it defines the 2 main interface as like RequestSpecification interface and Response interface.
+	- RequestSpecification interface is used to send parameter to server and Response interface is used to capture the parameter from server.
+	- We can easily configure Rest Assured with different build tool as like maven, ant, gradle etc.
+	- We can easily configure Rest Assured with testing framework as like Junit or TestNG testing framework?
+	- We can easily configure Rest Assured with BDD Framework using cucumber tool.
+	- in my current organization we use Rest Assured 4.4.0 library or dependency.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+What is use RequestSpecification interface in Rest Assured?				VVVVVIMMMPPPPPPPPPPP	
+	- RequestSpecification is an interface in Rest Assured present inside the Rest Assured Library.
+	- We get the RequestSpecification interface object by using given() method. and this given() method present inside the RestAssured class.	
+	- once get the RequestSpecification interface then we can add different parameters we can add
+				I) base URI
+				2) base Path
+				3) Query Parameter
+				4) Path Parameter
+				5) Request header
+				6) Request body
+				7) Authorization types
+				8) Request Cookies
+				9) upload files
+				10) generate the logs
+				11) Select HTTP Request
+				
+	-  we add BaseURI using baseUri() method, and this baseUri() method inside the RequestSpecification interface and return type is RequestSpecification interface.
+	- we add base Path using basePath() method and this basePath() method present inside the RequestSpecification interface and return type is RequestSpecification interface.
+	- we add query Parameter using queryParam() method by passing key-value pair and this queryParam() method  inside the RequestSpecification interface and return type is RequestSpecification interface.
+	- we add multiple Query Parameter by creating object of HashMap class and then we add HashMap object inside the queryParams() method and inside the RequestSpecification interface and return type is RequestSpecification interface.
+
+	- we add path parameter using pathParam() method by passing key-value pair and this method present inside the RequestSpecification interface and return type is RequestSpecification interface.
+	- we add multiple Path Parameter creating object of HashMap class and then we pass HashMap object in pathParams() method.this method present inside the RequestSpecification interface and return type is RequestSpecification interface.
+
+	- we add request header using header() method by passing key-value and this headers method present inside the RequestSpecification interface and return type is RequestSpecification interface.
+	
+	- we add request multiple headers by creating object of HashMap class and the pass HashMap object in headers() method.this method present inside the RequestSpecification interface and return type is RequestSpecification interface.
+
+	- we add Request cookies using cookies() method and this method present inside the RequestSpecification interface and return type is RequestSpecification interface.
+	- we add multiple request cookies by creating object of HashMap class then we pass HashMap object in cookies()method and this method present inside the RequestSpecification interface and return type is RequestSpecification interface.
+
+	- we add request body using body() method by passing JSON of String variable or XML of String variables and this this method present inside the RequestSpecification interface and return type is RequestSpecification interface.
+
+	- we can add different types of Authorization using RequestSpecification interface as like basic authorization, digest Authorization and bearer token, OAuth 1.0 and OAuth 2.0. this all Authorization method present inside the RequestSpecification interface and return type is RequestSpecification interface.
+	
+	- we can generate request log using log().all() method and this method is present inside the RequestSpecification interface and return type is RequestSpecification interface.
+
+	- we can select the different types of HTTP Request as like GET, POST,PUT,PATCH, DELETE, HEAD and OPTION this all request present inside the RequestSpecification interface and return type is Response interface.
+	- get() method is used to retrieve the entity from server
+	- post() method is use to create a new entity in server
+	- put() method is used to update the whole entity in server
+	- patch() method is used to update partial Entity in server
+	- delete() method is used to delete the entity in server
+	-head() method is similar like get() method but it does not return the response body.
+	-head() method is used to retrieve the entity from server without response body
+	- option() method to  check which type of request we can use for endpoints.
+	- option() method it gives the Request type information.
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is use of Response interface in Rest Assured?						VVVVVIMMMPPPPPPPPPPP	
+
+	- Response interface present inside the Rest Assured library.
+	- once we select the HTTP Request as like get(),post(),put(),patch() or delete() it return the Response interface.
+	- by using Response interface 
+					I) we can capture status code using getStatusCode() or statusCode() method
+												- return type is int
+					2) we can capture status line using getStatusLine() or statusLine() method
+												- return type is String
+
+					3) we can capture response time using getTime() or time() method
+												- return type is long
+
+					4) we can response body using getBody() or body() method
+												- return type is ResponseBody interface
+														
+	
+					4) we can capture response headers  using getHeaders() or headers() or header()method by passing header key name
+												- return type is Headers interface
+
+
+					5) we can capture response cookies using getCookies() or cookies() method 
+												- return type is  Map<String, String>
+
+					
+					6) we can capture response body values using JsonPath library.
+
+				
+					7) we can capture ValidatableResponse Interface object using then() method and by passing ValidatableResponse we can add assertion for status code, status line, response time, response body , response headers, response cookies and response body key variables datatypes.
+
+					8) we can generate response logs.
+
+===============================================================================================================
+What is use of Hamcrest Library														VVVVVVIMMMPPPPPPPPPPPPPPPPPPP
+		or
+How to add assertion in Rest Assured
+
+	- we can add assertion using Hamcrest Library.
+	- Hamcrest is define the Matchers class to add assertion
+	- Matchers class it defines the different methods to add the assertion for numbers, String, Arrays and Map object
+
+
+	In Numbers assertion they defines the different methods
+			1) equalTo()
+			2) lessThan()
+			3) lessThanOrEqualTo()
+			4) greaterThan()
+			5) greaterThanOrEqualTo()
+
+	in String assertion they defines the different  method
+			I) equalTo(0
+			2) is()
+			3) equalToIgnoringCase()
+			4) equalToIgnoringWhiteSpace
+			5) containsString()
+			6) startsWith()
+			7) endsWith()
+
+	in Arrays Assertion they define 2  methods
+			1) hasItem()
+			2) hasItems()
+
+	in Map assertion they defines the 3 methods
+			1)  hasKey()
+			2) hasValue()
+			3) hasEntry()
+
+===============================================================================================================
+What is use of Json Path library?
+		- JsonPath library is used to capture the values from response body.
+		- we can capture single value or we can capture arrays all values or we can capture nested Json all values
+		- JsonPath class defines the different as like
+				I) getString()
+									used to capture the string value
+				2) getBoolean()
+									used to capture the boolean value
+				3) getInt()
+										used to capture the int value
+				4) getByte()
+											used to capture the byte value
+				5) getShort()
+									used to capture the short int value
+				6) getLong()
+									used to capture the long int value
+				7) getDouble()
+									used to capture the double decimal value
+				8) getFloat()
+									used to capture the decimal value
+				9) getChar()
+									used to capture the character value
+				10) getList()
+									used to capture the arrays value
+									return type is List interface
+
+				11) getMap() method
+									used to capture the nested json value
+									return type is Map interface
+	
+
+package Tutorial5;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import io.restassured.RestAssured;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
+public class Demo1 {
+
+	public static void main(String[] args) {
+		RestAssured.baseURI = "http://localhost:3000/registers/2";
+		RequestSpecification httpRequest = RestAssured.given();
+		Response response = httpRequest.get();
+		
+		String respbody = response.body().asString();
+		JsonPath jPath = new JsonPath(respbody);
+
+		JsonPath jsonPath = response.body().jsonPath();
+		
+		List<String> all= jsonPath.getList("topic");
+		
+		for(String a: all)
+		{
+			System.out.println(a);
+		}
+		
+		Map<String,Object> map = jsonPath.getMap("DOB");
+		
+		for(Entry<String,Object> abc: map.entrySet())
+		{
+			System.out.println(abc.getKey() + "::: "+abc.getValue());
+		}
+	}
+}
+
+
+package Tutorial5;
+
+import java.util.Map;
+import java.util.Map.Entry;
+
+import io.restassured.RestAssured;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
+public class Demo2 {
+
+	public static void main(String[] args) {
+		RestAssured.baseURI = "http://localhost:3000/registers/2";
+		RequestSpecification httpRequest = RestAssured.given();
+		Response response = httpRequest.get();
+
+		JsonPath jsonPath = response.body().jsonPath();
+
+		Map<String, Object> map = jsonPath.getMap("");
+
+		for (Entry<String, Object> abc : map.entrySet()) {
+			System.out.println(abc.getKey() + "  ::: " + abc.getValue());
+		}
+
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

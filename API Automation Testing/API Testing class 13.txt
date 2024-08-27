@@ -1,0 +1,498 @@
+Capture Response Cookies in Rest Assured.
+----------------------------------------------------------------------------------------------
+syntax:
+			Map<String,String> allCookies = resp.getCookies();
+
+		Map<String,String> allCookies = resp.cookies();
+
+			for(Entry<String, String> abc: allCookies.entrySet)
+			{
+					syso(abc.getKey(), + " ::: "+abc.getValue());
+			}
+
+
+Add Assertion for cookies
+
+			ValidatableResponse validateResponse = resp.then().assertThat();
+
+			validateResponse.cookies("cookies keyname", Matchers.containString(""));
+
+----------------------------------------------------------------------------------------------
+Step 1: Configure the Base URI in Rest Assured
+				RestAssured.baseURI="https://www.google.com";
+
+step 2: get the request Specification interface object
+
+				RequestSpecification httpRequest = RestAssured.given();
+
+step 3: select the HTTP GET Request
+				Response resp = httpRequest.get();
+
+step4: capture status code
+				int a = resp.statusCode();
+
+step 5:capture status line
+			String b = resp.statusLine();
+
+step 6: capture response time
+			long c = resp.time();
+
+step 7: capture response body
+			String d = resp.body().asString();
+
+step 8: capture response headers
+	
+			Headers allHeader = resp.headers();
+
+step 9: iterate all headers
+
+			for(Header abc: allHeader)
+			{
+					syso(abc.getName()+ " :: "+abc.getValue());
+
+			}
+
+step 10: captures response cookies
+
+		Map<String,String> allCookies= 	resp.cookies();
+
+
+step 11: iterate all cookies
+
+			for(Entry<String,String> abc : allCookies.entrySet())
+			{
+					syso(abc.getKey() + " :: "+abc.getValue());
+			}
+
+
+step 12: response size in bytes			1KB = 1024 byte
+			int size = resp.asByteArray().length;
+
+
+
+package Tutorial5;
+
+import java.util.Map;
+import java.util.Map.Entry;
+
+import io.restassured.RestAssured;
+import io.restassured.http.Header;
+import io.restassured.http.Headers;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
+public class Demo1 {
+
+	public static void main(String[] args) {
+		//Step 1: Configure Base URI in Rest Asssured
+		RestAssured.baseURI="https://www.google.com";
+		
+		//step 2: get the RequestSpecification inteface object
+		RequestSpecification httpRequest =RestAssured.given();
+		
+		//step 3: select the HTTP GET Request
+		Response resp = httpRequest.get();
+		
+		//step4: capture status code
+		int a = resp.statusCode();
+		System.out.println(a);
+		
+		//step 5: capture statusline
+		String b = resp.statusLine();
+		System.out.println(b);
+		
+		//step 6" capture response time
+		long c = resp.time();
+		System.out.println(c);
+
+		//step 7: capture response body
+		String d = resp.body().asString();
+		//System.out.println(d);
+	
+	
+		//step 8: capture response headers
+		Headers allHeader = resp.headers();
+		
+		//step 9: iterate all headers
+		for(Header abc: allHeader)
+		{
+			System.out.println(abc.getName() + " ::: "+abc.getValue());
+		}
+		
+		System.out.println("------------------------------------------------------");
+		//step 10: capture response cookies
+		Map<String,String> allCookies = resp.cookies();
+		
+		//step 11: iterate all cookies
+		
+		for(Entry<String,String> abc: allCookies.entrySet())
+		{
+			System.out.println(abc.getKey() + " :: "+abc.getValue());
+		}
+		
+		System.out.println("------------------------------------------------------");
+
+		//step 12: capture response size in bytes
+		int size = resp.asByteArray().length;
+		
+		System.out.println(size);
+		//1 KB = 1024 Bytes
+		System.out.println(size/1024);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	}
+
+}
+==============================================================================
+package Tutorial5;
+
+import org.hamcrest.Matchers;
+import org.junit.Assert;
+
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.response.ValidatableResponse;
+import io.restassured.specification.RequestSpecification;
+
+public class Demo2 {
+
+	public static void main(String[] args) {
+		// Step 1: Configure Base URI in Rest Asssured
+		RestAssured.baseURI = "https://www.google.com";
+
+		// step 2: get the RequestSpecification inteface object
+		RequestSpecification httpRequest = RestAssured.given();
+
+		// step 3: select the HTTP GET Request
+		Response resp = httpRequest.get();
+
+		// step 4:get the ValidatableResponse interface object
+		ValidatableResponse validateResponse = resp.then().assertThat();
+
+		// step 5: add assertion for status code
+		validateResponse.statusCode(Matchers.equalTo(200));
+
+		// step 6: add assertion for status line
+		validateResponse.statusLine(Matchers.containsString("200 OK"));
+
+		// step 7: add assertion for response time
+		validateResponse.time(Matchers.lessThan(5000l));
+
+		// step 8: add assertion for response cookies
+		validateResponse.cookie("AEC", Matchers.containsString("AVYB7"));
+
+		// step 9:add assertion for response size
+
+		int size = validateResponse.extract().asByteArray().length;
+		System.out.println(size);
+
+	}
+}
+========================================================================================
+Response 
+		1) status code
+		2) status line
+		3) response time
+		4) response body
+		5) response header
+		6) response log
+=============================================================================================
+RequestSpecification
+		1) Base URI
+		2) Base Path
+		3) Path Parameter
+		4) Query Parameter
+		5) Add Request Header
+		6) add Request Cookies
+		7) Request Body
+		8) upload the files
+		9) Authorization
+		10) Request Log
+		11) Select the HTTP Request
+=============================================================================================
+How to upload files or images  in Rest Assured							VVVIMMPPPPP
+
+syntax:
+	httpRequest.multiPart(new File("file location"));
+
+
+
+step 1: configure Base URI 
+		RestAssured.baseURI="http://postman-echo.com/post";
+
+
+step 2: get the Request Specification interface object
+			
+		RequestSpecification httpRequest = RestAssured.given();
+
+step 3: add the Request Content-Type header 
+
+		httpRequest.header("Content-Type","multipart/form-data");
+
+step 4: add files  to HTTP Request 
+		
+		httpRequest.multiPart(new File("file location"));
+
+
+step 5: select HTTP POST Request
+
+		Response response = httpRequest.post();
+
+step 6: capture status code, status line, time and response body
+
+		
+package Tutorial5;
+
+import java.io.File;
+
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
+public class Demo3 {
+
+	//How to upload images/Files/Photos in Rest Assured
+	public static void main(String[] args) {
+		
+		///Configure Base URI in Rest Assured
+		RestAssured.baseURI="http://postman-echo.com/post";
+		
+		//get the Request Specification interface object
+		RequestSpecification httpRequest = RestAssured.given();
+		
+		//add request Header
+		httpRequest.header("Content-Type","multipart/form-data");
+		
+		//add image or file to HTTP Request
+		httpRequest.multiPart(new File("C:\\Users\\praf0\\OneDrive\\Desktop\\Final API Automation Section Modified Required.docx"));
+		
+		//select HTTP POST Request
+		Response response = httpRequest.post();
+		
+		//response code
+		System.out.println(response.statusCode());
+		System.out.println(response.statusLine());
+		System.out.println(response.time());
+		
+		System.out.println(response.body().asString());
+		
+	}
+
+}
+
+package Tutorial5;
+
+import java.io.File;
+
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
+public class Demo3 {
+
+	//How to upload images/Files/Photos in Rest Assured
+	public static void main(String[] args) {
+		
+		///Configure Base URI in Rest Assured
+		RestAssured.baseURI="http://postman-echo.com/post";
+		
+		//get the Request Specification interface object
+		RequestSpecification httpRequest = RestAssured.given();
+		
+		//add request Header
+		httpRequest.header("Content-Type","multipart/form-data");
+		
+		File f = new File("C:\\Users\\praf0\\OneDrive\\Desktop\\Final API Automation Section Modified Required.docx");
+		
+		//add image or file to HTTP Request
+		httpRequest.multiPart(f);
+		
+		//select HTTP POST Request
+		Response response = httpRequest.post();
+		
+		//response code
+		System.out.println(response.statusCode());
+		System.out.println(response.statusLine());
+		System.out.println(response.time());
+		
+		System.out.println(response.body().asString());
+		
+	}
+
+}
+===============================================================
+package Tutorial5;
+
+import java.io.File;
+import java.util.HashMap;
+
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
+public class Demo3 {
+
+	// How to upload images/Files/Photos in Rest Assured
+	public static void main(String[] args) {
+
+		/// Configure Base URI in Rest Assured
+		RestAssured.baseURI = "http://postman-echo.com";
+		
+		RestAssured.basePath="/post";
+		
+		// get the Request Specification interface object
+		RequestSpecification httpRequest = RestAssured.given();
+
+		HashMap<String, String> abc = new HashMap<String, String>();
+		abc.put("Content-Type", "multipart/form-data");
+		
+		// add request Header
+		httpRequest.headers(abc);
+
+		File f = new File("C:\\Users\\praf0\\OneDrive\\Desktop\\Final API Automation Section Modified Required.docx");
+
+		// add image or file to HTTP Request
+		httpRequest.multiPart(f);
+
+		// select HTTP POST Request
+		Response response = httpRequest.post();
+
+		// response code
+		System.out.println(response.statusCode());
+		System.out.println(response.statusLine());
+		System.out.println(response.time());
+
+		System.out.println(response.body().asString());
+
+	}
+
+}
+===================================================================
+package Tutorial5;
+
+import java.io.File;
+import java.util.HashMap;
+
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
+public class Demo3 {
+
+	// How to upload images/Files/Photos in Rest Assured
+	public static void main(String[] args) {
+
+		/// Configure Base URI in Rest Assured
+
+		// get the Request Specification interface object
+		RequestSpecification httpRequest = RestAssured.given();
+
+		httpRequest.baseUri("http://postman-echo.com");
+		httpRequest.basePath("/post");
+
+		HashMap<String, String> abc = new HashMap<String, String>();
+		abc.put("Content-Type", "multipart/form-data");
+
+		// add request Header
+		httpRequest.headers(abc);
+
+		File f = new File("C:\\Users\\praf0\\OneDrive\\Desktop\\Final API Automation Section Modified Required.docx");
+
+		// add image or file to HTTP Request
+		httpRequest.multiPart(f);
+
+		// select HTTP POST Request
+		Response response = httpRequest.post();
+
+		// response code
+		System.out.println(response.statusCode());
+		System.out.println(response.statusLine());
+		System.out.println(response.time());
+
+		System.out.println(response.body().asString());
+
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  

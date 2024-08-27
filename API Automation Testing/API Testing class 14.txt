@@ -1,0 +1,389 @@
+Personal API End to End Flow
+----------------------------------------------------------------------------------------------------------------------------------
+POST Request
+			Base URI				http://localhost:5000/personals
+			Request Header			Content-Type		application/json
+			Request Body		
+								{
+									        "fullName" : "{string}",
+									        "education" :
+           												 {
+            													  "graduation" : "{string}",
+              				 									 "postGraduation" : "{string}"
+													},
+									        "dob" : 
+													{
+														"date" : {int},
+														 "month" : "{string}",
+														 "year" : {int}
+													},
+										"address" :
+													{
+														"country" : "{string}",
+														"permanentAddress" : 
+																				{	
+																					"pincode" : {int},
+																					 "state" : "{string}",
+																					"city" : "{string}"
+																				},
+														"currentAddress" : 
+																				{	
+																					"pincode" : {int},
+																					 "state" : "{string}",
+																					"city" : "{string}"
+																				},
+										 "gender" : {boolean}
+								}	
+----------------------------------------------------------------------------------------------------------------------------------------------------------				
+GET Request
+			Base URI				http://localhost:5000/personals/{id}
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+PUT Request
+			Base URI				http://localhost:5000/personals/{id}
+			Request Header			Content-Type		application/json
+			Request Body		
+								{
+									        "fullName" : "{string}",
+									        "education" :
+           												 {
+            													  "graduation" : "{string}",
+              				 									 "postGraduation" : "{string}"
+													},
+									        "dob" : 
+													{
+														"date" : {int},
+														 "month" : "{string}",
+														"year" : {int}
+													},
+										"address" :
+													{
+														"country" : "{string}",
+														"permanentAddress" : 
+																				{	
+																					"pincode" : {int},
+																					 "state" : "{string}",
+																					"city" : "{string}"
+																				},
+														"currentAddress" : 
+																				{	
+																					"pincode" : {int},
+																					 "state" : "{string}",
+																					"city" : "{string}"
+																				},
+										 "gender" : {boolean}
+
+								}	
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------				
+GET Request
+			Base URI				http://localhost:5000/personals/{id}
+----------------------------------------------------------------------------------------------------------------------------------------------------------				
+DELETE Request
+			Base URI				http://localhost:5000/personals/{id}
+----------------------------------------------------------------------------------------------------------------------------------------------------------				
+GET Request
+			Base URI				http://localhost:5000/personals/{id}
+
+
+
+
+https://github.com/prafulp1030/PersonalAPIRestAssuredWithBDD.git
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+1) given()				it used to get the Request Specification interface
+2) header()				If we use header() from RequestSpecification interface then it is used to add the Request header
+
+3) headers() method			If we use header() from RequestSpecification interface then it is used to add multiples Request header by passing HashMap object name.
+
+4) body()				If we use body() from RequestSpecification interface then it is used to add the Request body
+
+
+5) RestAssured.baseURI="";
+
+6) baseUri()				 baseUri() method present inside RequestSpecification interface to add the baseUri.
+
+7) basePath()			basePath() method present inside RequestSpecification interface to add the base Path.
+
+
+8) log().all()				If we use log().all() from RequestSpecification interface then it is generate request logs
+
+
+9) get()				it used to retrieve entity from server
+
+10) post()			used to create new entity in server
+
+11) put()			used to update the entity in server
+
+12) patch 			used to update the partial entity in server
+
+13) delete			used to delete entity in server
+
+
+14) multiPart()		used to upload the files or images
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+1) getStatusCode()
+2) statusCode()			used to capture status code
+
+
+2) getStatusLine()
+2) statusLine()			used to capture status line
+
+
+3) getTime()
+3) time()				used to capture response time
+
+
+4) getHeaders()			if we use headers() from response interface then it is used to capture response header 
+4) headers()				
+
+
+5) getBody()
+5) body()				if we use body() from response interface then it used to capture response body
+
+
+6) getCookies()
+6) cookies()				if we use cookies() method from response interface then it used to capture response cookies
+
+
+7) log().all()			if we use log().all() from response interface then it will generate the response logs.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+Jackson-databind
+
+1) ObjectMapper class
+
+
+2) readTree() method		it used to read the json tree structure.
+				
+3) treeToValue() method		used to read the values from tree and convert to pojo classes		/ used to convert json object into Java object.			deserialization 
+
+4) writeValueAsString() method		used to convert the java object into the Json String of object.				serialization
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+Hamcrest
+
+
+1) equalTo()			used compare the Object value
+
+
+2) equalIgnoringCase()		used to ignore upper case and lower case and compare the values
+
+3) equalIgoningWhiteSpace		used to ignore the white space and compare the values
+
+4) containsString()			check the specific character is present or not in String
+
+5) startsWith()			check specific string is starts with specific character or not
+
+6) endsWith()			check the specific string is ends with specific character or not
+
+7) is()				used to compare the values
+
+
+
+8) equalTo()				compare the numbers
+
+9) lessThan()			check the numbers is less than or not
+
+10) lessThanAndEqualTo		check the numbers is less than or equal to not
+
+11) greaterThan				check the number is greater than or not
+
+12) greaterThanAndEqualTo			check the number is greater or equal to not 
+
+
+13) hasKey()				check the specific key is present or not
+
+14) hasValue				check the specific value is present or not
+
+14) hasEntry()					check specific key-value pair is present ornot
+
+15) hasItem()				check specific item is present or not in array
+
+16) hasItems()				check the specific items present or not in array
+
+--------------------------------------------------------------------------------------------------------------------
+Json Path class
+
+1) getString()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+					
+
+
+
+POST Request/PUT/PATCH
+
+
+
+					RestAssured
+								.given()
+													.baseUri(" base URI")
+													.and()
+													.basePath("base Path")
+													.and()
+													.auth()
+													.preemptive()
+													.oauth2("Access Token")
+													.and()
+													.header("Content-Type","application/json")
+													.and()
+													.body("Request Body--- we create request body using serialization and deserialization")
+								.when()
+													.post()
+								.then()
+													.assertThat()
+													.statusCode(Matchers.EqualTo(201))
+													.and()
+													.statusLine(Matchers.containsString("201 Created"))
+													.and()
+													.time(Matchers.lessThan((long)2000))
+													.and()
+													.body("keyname", Matchers.equalIgnoringCase("Expected value"))
+													.and()
+													.body("key name", Matchers.hasKey("expected key name"))
+													.and()
+													.body("key-name", Matchers.hasEntry("expected key", "expected value"))
+													.and()
+													.header("Content-Type",Matchers.containsString("application/json"))
+													.and()
+													.body(JsonSchemValidator.matcheJsonSchema(new File("json file location")))
+													.and()
+													.log()
+													.all();
+
+						
+				ObjectMapper mapper =new ObjectMapper();
+				File f = new File("json Test Data file location")
+				JsonNode jsonNode = mapper.readTree(f);
+
+				POJOClassName objectname = mapper.treeToValue(jsonNode.get("json Node name"), POJOClassName.class)
+
+
+				Strring Requestbody =mapper.writeValueAsString(objectname);
+
+=========================================================================================================
+
+GET Request
+					RestAssured
+								.given()
+													.baseUri(" base URI")
+													.and()
+													.basePath("base Path")
+													.and()
+													.auth()
+													.preemptive()
+													.oauth2("Access Token")
+													.log().all()
+								.when()
+													.get()
+								.then()
+													.assertThat()
+													.statusCode(Matchers.EqualTo(200))
+													.and()
+													.statusLine(Matchers.containsString("200 OK"))
+													.and()
+													.time(Matchers.lessThan((long)2000))
+													.and()
+													.body("keyname", Matchers.equalIgnoringCase("Expected value"))
+													.and()
+													.body("key name", Matchers.hasKey("expected key name"))
+													.and()
+													.body("key-name", Matchers.hasEntry("expected key", "expected value"))
+													.and()
+													.header("Content-Type",Matchers.containsString("application/json"))
+													.and()
+													.body(JsonSchemValidator.matcheJsonSchema(new File("json file location")))
+													.and()
+													.log()
+													.all();
+
+=========================================================================================================
+
+DELETE Request
+					RestAssured
+								.given()
+													.baseUri(" base URI")
+													.and()
+													.basePath("base Path")
+													.and()
+													.auth()
+													.preemptive()
+													.oauth2("Access Token")
+													.log().all()
+								.when()
+													.delete()
+								.then()
+													.assertThat()
+													.statusCode(Matchers.EqualTo(204))
+													.and()
+													.statusLine(Matchers.containsString("204 No Content"))
+													.and()
+													.time(Matchers.lessThan((long)2000))
+													.and()
+													.log()
+													.all();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

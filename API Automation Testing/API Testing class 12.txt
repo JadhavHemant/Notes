@@ -1,0 +1,671 @@
+What is JSON Schema Validator?
+
+JSON Schema Validation													VVVVVIMMMPPPPPPPPPPPPPPPP
+----------------------------------------------------------------------------------------------------------------------
+		- JSON Schema Validation we validate json response key and its datatypes.
+		- once get the Response from the server we have to validate which types of key is return type from server and which types of value is accepted by the keys.
+		- in JSON Schema Validator we mention JSON Schema Version, type of keys , keys properties, which is keys is required in Response body, which types of value is accepted in arrays, formats of the values (datatype is accepted by each and every key).
+
+		- JSON Schema Validation is given in Swagger documentations.
+		- As well as we can generate JSON Schema online
+		- we store JSON Schema in src/test/resources package.
+		- Extension of json schema file is dot json.
+		- we have to add JSON Schema Validator dependency.
+
+syntax:
+			
+			JsonSchemaValidator.matchesJsonSchema(new File("json schema file location"));
+
+Step 1: Configure Base URI in Rest Assured
+		RestAssured.baseURI="http://localhost:3000/employees/2";
+
+Step 2: get the Request Specification object
+		RequestSpecification httpRequest = RestAssured.given();
+
+step 3: Select the HTTP GET Request
+		Response response = httpRequest.get();
+
+step 4: get the ValidatableResponse interface object
+	
+		ValidatableResponse validateResponse = response.then().assertThat();
+
+step 5: validate the JSON schema
+
+		validateResponse.body(JsonSchemaValidator.matchesJsonSchema(new File("json schema file path")));
+
+
+step 6: validate the status code
+		validateResponse.statusCode(Matchers.equalTo(200));
+
+step 7: validate the status line, time, body, headers  etc..
+
+
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Generated schema for Root",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "mobileNumber": {
+      "type": "number"
+    },
+    "gender": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "firstName",
+    "lastName",
+    "address",
+    "mobileNumber",
+    "gender"
+  ]
+}
+
+
+package Tutorial4;
+
+import java.io.File;
+
+import org.hamcrest.Matchers;
+
+import io.restassured.RestAssured;
+import io.restassured.module.jsv.JsonSchemaValidator;
+import io.restassured.response.Response;
+import io.restassured.response.ValidatableResponse;
+import io.restassured.specification.RequestSpecification;
+
+public class Demo1 {
+
+	public static void main(String[] args) {
+		RestAssured.baseURI = "http://localhost:3000/employees/2";
+
+		RequestSpecification httpRequest = RestAssured.given();
+
+		Response response = httpRequest.get();
+
+		ValidatableResponse validateResponse = response.then().assertThat();
+		
+		File f =new File(System.getProperty("user.dir")+"//src//test//resources//JSONSchema//employeeJsonSchema.json");
+		
+		validateResponse.body(JsonSchemaValidator.matchesJsonSchema(f));
+		
+		validateResponse.statusCode(Matchers.equalTo(200));
+		
+		validateResponse.statusLine(Matchers.containsString("200 OK"));
+		
+		validateResponse.log().all();
+	}
+
+}
+=======================================================================================================
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Generated schema for Root",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "username": {
+      "type": "string"
+    },
+    "password": {
+      "type": "string"
+    },
+    "topic": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "DOB": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "number"
+        },
+        "month": {
+          "type": "string"
+        },
+        "year": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "date",
+        "month",
+        "year"
+      ]
+    },
+    "gender": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "firstName",
+    "lastName",
+    "username",
+    "password",
+    "topic",
+    "DOB",
+    "gender"
+  ]
+}
+
+
+package Tutorial4;
+
+import java.io.File;
+
+import org.hamcrest.Matchers;
+
+import io.restassured.RestAssured;
+import io.restassured.module.jsv.JsonSchemaValidator;
+import io.restassured.response.ValidatableResponse;
+
+public class Demo2 {
+
+	public static void main(String[] args) {
+
+		RestAssured.baseURI = "http://localhost:7000/registers/1";
+
+		ValidatableResponse validateResponse = RestAssured.given().get().then().assertThat();
+
+		File f = new File(
+				System.getProperty("user.dir") + "//src//test/resources//JSONSchema//registerJsonSchema.json");
+
+		validateResponse.body(JsonSchemaValidator.matchesJsonSchema(f));
+
+		validateResponse.statusCode(Matchers.equalTo(200));
+
+		validateResponse.statusLine(Matchers.containsString("200 OK"));
+
+		validateResponse.log().all();
+
+	}
+
+}
+==========================================================================================
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Generated schema for Root",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "username": {
+      "type": "string"
+    },
+    "password": {
+      "type": "string"
+    },
+    "topic": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dOB": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "number"
+        },
+        "month": {
+          "type": "string"
+        },
+        "year": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "date",
+        "month",
+        "year"
+      ]
+    },
+    "gender": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "firstName",
+    "lastName",
+    "username",
+    "password",
+    "topic",
+    "dOB",
+    "gender"
+  ]
+}
+=======================================================================
+{
+	"registerUser": {
+		"firstName": "Kavita",
+		"lastName": "Pagar",
+		"username": "Kavita@gmail.com",
+		"password": "Kavita@123",
+		"topic": [
+			"OOPS Java",
+			"Rest API",
+			"TestNG",
+			"BDD"
+		],
+		"bOB": 
+		{
+			"date": 15,
+			"month": "Feb",
+			"year": 2012
+		},
+		"gender": "female"
+	}
+}
+=============================================================
+package Tutorial4;
+
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.Data;
+
+@Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class RegisterPOJO {
+	
+	@JsonProperty(value="firstName")
+	private String firstName;
+
+	@JsonProperty("lastName")
+	private String lastName;
+
+	@JsonProperty(value="username")
+	private String username;
+
+	@JsonProperty(value="password")
+	private String password;
+
+	@JsonProperty(value="topic")
+	private List<String> topic;
+
+	@JsonProperty(value="bOB")
+	private DOB bOB;
+
+	@JsonProperty(value="gender")
+	private String gender;
+
+}
+
+package Tutorial4;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.Data;
+
+//@Getter
+//@Setter
+//@ToString
+//@EqualsAndHashCode
+//@NoArgsConstructor
+//@AllArgsConstructor
+@Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class DOB {
+	
+	@JsonProperty("date")
+	private int date;
+	
+	@JsonProperty(value = "month")
+	private String month;
+	
+	@JsonProperty(value = "year")
+	private int year;
+	
+
+}
+=================================================================================
+package Tutorial4;
+
+import java.io.File;
+
+import org.hamcrest.Matchers;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import io.restassured.module.jsv.JsonSchemaValidator;
+
+public class RegisterDemo1 {
+
+	public static void main(String[] args) throws Exception {
+
+		RestAssured.baseURI = "http://localhost:7000";
+
+		// create the Request Body
+		ObjectMapper mapper = new ObjectMapper();
+		File jsonTestData = new File(
+				System.getProperty("user.dir") + "//src//test//resources//JsonTestData//registerTestData.json");
+
+		JsonNode jsonNode = mapper.readTree(jsonTestData);
+		RegisterPOJO register = mapper.treeToValue(jsonNode.get("registerUser"), RegisterPOJO.class);
+		
+		String requestBody = mapper.writeValueAsString(register);
+
+		RestAssured
+				.given()
+					.and()
+					.header("Content-Type","application/json")
+					.and()
+					.body(requestBody)
+					.and()
+				.when()
+					.post("/registers")
+				.then()
+					.assertThat()
+					.statusCode(Matchers.equalTo(201))
+					.and()
+					.statusLine(Matchers.containsString("201 Created"))
+					.and()
+					.time(Matchers.lessThan((long)1000))
+					.and()
+					.body("firstName", Matchers.equalTo(register.getFirstName()))
+					.and()
+					.body("username", Matchers.containsString(register.getUsername()))
+					.and()
+					.body("topic", Matchers.hasItem(register.getTopic().get(0)))
+					.and()
+					.body("dOB", Matchers.hasKey("month"))
+					.and()
+					.body(JsonSchemaValidator.matchesJsonSchema(new File(System.getProperty("user.dir")+"//src//test//resources//JSONSchema//registerJsonSchema.json")))
+					.and()
+					.header("Content-Type", Matchers.equalTo("application/json"))
+					.and()
+					.log()
+					.all();
+		
+		
+					
+					
+		
+	}
+
+}
+
+
+=======================================================================================
+package Tutorial4;
+
+import java.io.File;
+
+import org.hamcrest.Matchers;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import io.restassured.module.jsv.JsonSchemaValidator;
+
+public class RegisterDemo1 {
+
+	public static void main(String[] args) throws Exception {
+
+		RestAssured.baseURI = "http://localhost:7000";
+
+		// create the Request Body
+		ObjectMapper mapper = new ObjectMapper();
+		File jsonTestData = new File(
+				System.getProperty("user.dir") + "//src//test//resources//JsonTestData//registerTestData.json");
+
+		JsonNode jsonNode = mapper.readTree(jsonTestData);
+		RegisterPOJO register = mapper.treeToValue(jsonNode.get("registerUser"), RegisterPOJO.class);
+		
+		String requestBody = mapper.writeValueAsString(register);
+
+		RestAssured
+				.given()
+					.and()
+					.header("Content-Type","application/json")
+					.and()
+					.body(requestBody)
+					.and()
+				.when()
+					.put("/registers/1")
+				.then()
+					.assertThat()
+					.statusCode(Matchers.equalTo(200))
+					.and()
+					.statusLine(Matchers.containsString("200 OK"))
+					.and()
+					.time(Matchers.lessThan((long)1000))
+					.and()
+					.body("firstName", Matchers.equalTo(register.getFirstName()))
+					.and()
+					.body("username", Matchers.containsString(register.getUsername()))
+					.and()
+					.body("topic", Matchers.hasItem(register.getTopic().get(0)))
+					.and()
+					.body("dOB", Matchers.hasKey("month"))
+					.and()
+					.body(JsonSchemaValidator.matchesJsonSchema(new File(System.getProperty("user.dir")+"//src//test//resources//JSONSchema//registerJsonSchema.json")))
+					.and()
+					.header("Content-Type", Matchers.equalTo("application/json"))
+					.and()
+					.log()
+					.all();
+		
+		
+					
+					
+		
+	}
+
+}
+================================================================================
+package Tutorial4;
+
+import java.io.File;
+
+import org.hamcrest.Matchers;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import io.restassured.module.jsv.JsonSchemaValidator;
+
+public class RegisterDemo1 {
+
+	public static void main(String[] args) throws Exception {
+
+		RestAssured.baseURI = "http://localhost:7000";
+
+		// create the Request Body
+		ObjectMapper mapper = new ObjectMapper();
+		File jsonTestData = new File(
+				System.getProperty("user.dir") + "//src//test//resources//JsonTestData//registerTestData.json");
+
+		JsonNode jsonNode = mapper.readTree(jsonTestData);
+		RegisterPOJO register = mapper.treeToValue(jsonNode.get("registerUser"), RegisterPOJO.class);
+		
+		String requestBody = mapper.writeValueAsString(register);
+
+		RestAssured
+				.given()
+				.when()
+					.get("/registers/1")
+				.then()
+					.assertThat()
+					.statusCode(Matchers.equalTo(200))
+					.and()
+					.statusLine(Matchers.containsString("200 OK"))
+					.and()
+					.time(Matchers.lessThan((long)1000))
+					.and()
+					.body("firstName", Matchers.equalTo(register.getFirstName()))
+					.and()
+					.body("username", Matchers.containsString(register.getUsername()))
+					.and()
+					.body("topic", Matchers.hasItem(register.getTopic().get(0)))
+					.and()
+					.body("dOB", Matchers.hasKey("month"))
+					.and()
+					.body(JsonSchemaValidator.matchesJsonSchema(new File(System.getProperty("user.dir")+"//src//test//resources//JSONSchema//registerJsonSchema.json")))
+					.and()
+					.header("Content-Type", Matchers.equalTo("application/json"))
+					.and()
+					.log()
+					.all();
+		
+		
+					
+					
+		
+	}
+
+}
+================================================================================================
+package Tutorial4;
+
+import java.io.File;
+
+import org.hamcrest.Matchers;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import io.restassured.module.jsv.JsonSchemaValidator;
+
+public class RegisterDemo1 {
+
+	public static void main(String[] args) throws Exception {
+
+		RestAssured.baseURI = "http://localhost:7000";
+
+		RestAssured
+				.given()
+				.when()
+					.delete("/registers/1")
+				.then()
+					.assertThat()
+					.statusCode(Matchers.equalTo(200))
+					.and()
+					.statusLine(Matchers.containsString("200 OK"))
+					.and()
+					.time(Matchers.lessThan((long)1000))
+					.and()
+					.header("Content-Type", Matchers.equalTo("application/json"))
+					.and()
+					.log()
+					.all();
+		
+			
+		
+	}
+
+}
+============================================================================================
+{
+    "personals" :
+    [
+    {
+        "id" : "1",
+        "fullName" : "Akshay Mankar",
+        "education" :
+            {
+                "graduation" : "BE",
+                "postGraduation" : "M.Tech"
+            },
+        "dob" : 
+        {
+            "date" : 10,
+            "month" : "Jan",
+            "year" : 2010
+        },
+        "address" :
+        {
+            "country" : "India",
+            "permanentAddress" : 
+                {
+                    "pincode" : 112233,
+                    "state" : "MH",
+                    "city" : "Pune"
+                },
+            "currentAddress" :
+            {
+                "pincode" : 332244,
+                "state" : "MH",
+                "city" : "Pune"
+            }
+        },
+        "gender" : true
+    },
+    {
+        "id" : "2",
+        "fullName" : "Anjali Gurav",
+        "education" :
+            {
+                "graduation" : "B.Tech",
+                "postGraduation" : "M.E"
+            },
+        "dob" : 
+        {
+            "date" : 10,
+            "month" : "Feb",
+            "year" : 2011
+        },
+        "address" :
+        {
+            "country" : "India",
+            "permanentAddress" : 
+                {
+                    "pincode" : 556677,
+                    "state" : "MH",
+                    "city" : "Mumbai"
+                },
+            "currentAddress" :
+            {
+                "pincode" : 889900,
+                "state" : "MH",
+                "city" : "Pune"
+            }
+        },
+        "gender" : false
+    }
+]
+}
